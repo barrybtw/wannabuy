@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
 import { useWishlist } from "../stores/useWishlist";
+import Budget from "../components/Budget";
 const Home: NextPage = () => {
   let lol = useWishlist((state) => state);
   function add() {
@@ -35,6 +36,7 @@ const Home: NextPage = () => {
           <button onClick={() => rem(product.id as string)}>Remove</button>
         </div>
       ))}
+      <Budget />
     </div>
   );
 };
