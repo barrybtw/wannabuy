@@ -1,7 +1,7 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
 
-interface Product {
+export interface Product {
   id?: string;
   name: string;
   price: number;
@@ -16,17 +16,11 @@ interface ProductState {
 export const useWishlist = create<ProductState>()(
   persist(
     (set, get) => ({
-      products: [
-        {
-          id: "1",
-          name: "Product 1",
-          price: 10,
-        },
-      ],
+      products: [] as Product[],
       addProduct: (product: Product) =>
         set({
           products: [
-            ...get()!.products,
+            ...(get()!.products as Product[]),
             { ...product, id: (Math.random() * 100000).toString() },
           ],
         }),
@@ -38,3 +32,7 @@ export const useWishlist = create<ProductState>()(
     },
   ),
 );
+
+export function useProducts() {
+  return useWishlist((state) => state.products) as Product[];
+}

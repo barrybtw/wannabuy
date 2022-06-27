@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.css";
-import { useWishlist } from "../stores/useWishlist";
+import { Product, useProducts, useWishlist } from "../stores/useWishlist";
 import Budget from "../components/Budget";
 const Home: NextPage = () => {
   let lol = useWishlist((state) => state);
+  const products = useProducts();
   function add() {
     lol.addProduct({
       name: "test",
@@ -12,11 +13,15 @@ const Home: NextPage = () => {
   }
 
   function get() {
-    console.log(lol.products);
+    console.log(lol.products as Product[]);
   }
 
   function rem(id: string) {
     lol.removeProduct(id);
+  }
+
+  if (!lol) {
+    return <div>Loading...</div>;
   }
 
   return (
@@ -27,7 +32,7 @@ const Home: NextPage = () => {
       <br />
       <button onClick={get}>Get products</button>
       <br />
-      {lol.products.map((product) => (
+      {products.map((product) => (
         <div key={product.id}>
           <span>
             <hr />
@@ -36,7 +41,6 @@ const Home: NextPage = () => {
           <button onClick={() => rem(product.id as string)}>Remove</button>
         </div>
       ))}
-      <Budget />
     </div>
   );
 };
